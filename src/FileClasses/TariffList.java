@@ -1,0 +1,231 @@
+package FileClasses;
+
+import java.util.NoSuchElementException;
+
+public class TariffList implements TariffPolicy{
+
+    private TariffNode head;
+    private TariffNode tail;
+    private int size;
+
+    public TariffList(){
+        this.head = null;
+        this.size = 0;
+    }
+
+    public TariffList(TariffList otherTariffList){
+        this.head = otherTariffList.head;
+        this.size = otherTariffList.size;
+    }
+
+    public void addToStart(Tariff data){
+        TariffNode newNode = new TariffNode(data, head);
+        head = newNode;
+        size++;
+        if(size == 1){
+            tail = head;
+        }
+    }
+
+    public void insertAtIndex(Tariff data, int index){
+        if(index < 0 || index > size){
+            throw new NoSuchElementException("Invalid Index");
+        }
+        if(index == 0){
+            addToStart(data);
+        }
+        else if(index == size){
+            TariffNode newNode = new TariffNode(data, null);
+            if(tail != null){
+                tail.setLink(newNode);
+                tail = newNode;
+            }
+            else{
+                head = tail = newNode;
+            }
+            size++;
+        }
+        else{
+            TariffNode newNode = new TariffNode(data, null);
+            TariffNode position = head;
+            for (int i = 0; i < index-1; i++){
+                position = position.getLink();
+            }
+            newNode.setLink(position.getLink());
+            position.setLink(newNode);
+            size++;
+        }
+    }
+
+    public void deleteFromIndex(int index) {
+        if (head == null){
+            throw new NoSuchElementException("Head is Null!");
+        }
+        if (index < 0 || index >= size) {
+            throw new NoSuchElementException("Invalid index: " + index);
+        }
+        if (index == 0) {
+            head = head.getLink();
+            size--;
+            if (size == 0) {
+                tail = null;
+            }
+            return;
+        }
+
+        TariffNode position = head;
+        for (int i = 0; i < index - 1; i++) {
+            position = position.getLink();
+        }
+        TariffNode nodeToDelete = position.getLink();
+        position.setLink(nodeToDelete.getLink());
+        if (nodeToDelete == tail) {
+            tail = position;
+        }
+        size--;
+    }
+
+    public void deleteFromStart() {
+        if (head == null) {
+            throw new NoSuchElementException("The list is empty, cannot delete from start.");
+        }
+        if (head == tail) {
+            head = tail = null;
+        } else {
+            head = head.getLink();
+        }
+        size--;
+    }
+
+    public void replaceAtIndex(Tariff newTariff, int index) {
+        if (index < 0 || index >= size) {
+            return;
+        }
+        TariffNode position = head;
+        for (int i = 0; i < index; i++) {
+            position = position.getLink();
+        }
+        position.setData(newTariff);
+    }
+
+    public Tariff find(String originCountry, String destinationCountry, String productCategory) {
+        TariffNode position = head;
+        int iterations = 0;
+        while (position != null) {
+            iterations++;
+            Tariff data = position.getData();
+            if (data.getOriginCountry().equals(originCountry) &&
+                    data.getDestinationCountry().equals(destinationCountry) &&
+                    data.getProductCategory().equals(productCategory)) {
+                System.out.println("Iterations: " + iterations);
+                return data;
+            }
+            position = position.getLink();
+        }
+        System.out.println("Iterations: " + iterations);
+        return null;
+    }
+
+    public boolean contains(String originCountry, String destinationCountry, String productCategory) {
+        TariffNode position = head;
+        while (position != null) {
+            Tariff data = position.getData();
+            if (data.getOriginCountry().equals(originCountry) &&
+                    data.getDestinationCountry().equals(destinationCountry) &&
+                    data.getProductCategory().equals(productCategory)) {
+                return true;
+            }
+            position = position.getLink();
+        }
+
+        return false;
+    }
+
+    public boolean equals(TariffList otherList) {
+        if (otherList == null || this.size != otherList.size) {
+            return false;
+        }
+        TariffNode current = this.head;
+        TariffNode otherCurrent = otherList.head;
+        while (current != null) {
+            if (!current.getData().equals(otherCurrent.getData())) {
+                return false;
+            }
+            current = current.getLink();
+            otherCurrent = otherCurrent.getLink();
+        }
+        return true;
+    }
+
+    public void display() {
+        if (head == null) {
+            System.out.println("The list has no elements.");
+        } else {
+            TariffNode position = head;
+            while (position != null) {
+                Tariff tariff = position.getData();  // Get the Tariff object from the node
+                System.out.println("Destination: " + tariff.getDestinationCountry() +
+                        ", Origin: " + tariff.getOriginCountry() +
+                        ", Category: " + tariff.getProductCategory() +
+                        ", Min Tariff: " + tariff.getMinimumTariff());
+                position = position.getLink();  // Move to the next node
+            }
+        }
+    }
+
+    @Override
+    public String evaluateTrade(double proposedTariff, double minimumTariff){
+        if(proposedTariff >= minimumTariff){
+            return "ACCEPTED";
+        }
+        else if(proposedTariff <= minimumTariff * 0.8){
+//            double surcharge = TradeRequests.tradeValue * ((minimumTariff - proposedTariff) / 100);
+            return "CONDITIONALLY ACCEPTED";
+        }
+        else {
+            return "REJECTED";
+        }
+    }
+
+    private class TariffNode{
+
+        private Tariff data;
+        private TariffNode link;
+
+        public TariffNode(){
+            this.data = null;
+            this.link = null;
+        }
+
+        public TariffNode(Tariff data, TariffNode link){
+            this.data = data;
+            this.link = link;
+        }
+
+        public TariffNode(TariffNode otherTariffNode){
+            this.data = otherTariffNode.data;
+            this.link = otherTariffNode.link;
+        }
+
+        public Tariff getData(){
+            return data;
+        }
+
+        public void setData(Tariff data){
+            this.data = data;
+        }
+
+        public TariffNode getLink(){
+            return link;
+        }
+
+        public void setLink(TariffNode link){
+            this.link = link;
+        }
+
+        @Override
+        public TariffNode clone(){
+            return new TariffNode(this);
+        }
+    }
+}

@@ -1,0 +1,155 @@
+package FileClasses;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class TradeRequests {
+
+    private Scanner reader = null;
+    private PrintWriter writer = null;
+    private String line = null;
+    private int LinesCounter = 0;
+    private ArrayList<TradeData> products = new ArrayList<>();
+
+    final private String REQ = "REQ";
+    private static int tradeRequestCounter = 1;
+    private String tradeRequestCounterFormatted = String.format("%03d", tradeRequestCounter);
+    private String tradeRequestNumber = REQ + tradeRequestCounterFormatted;
+    private String tradeFromCountry;
+    private String tradeToCountry;
+    private String category;
+    public static int tradeValue; // PRIVACY LEAK
+    private int proposedTariff;
+
+    public TradeRequests(){
+
+    }
+
+    public TradeRequests(String tradeFromCountry, String tradeToCountry, String category, int tradeValue, int proposedTariff) {
+        this.tradeRequestNumber = String.format("REQ%03d", tradeRequestCounter++);
+        this.tradeFromCountry = tradeFromCountry;
+        this.tradeToCountry = tradeToCountry;
+        this.category = category;
+        this.proposedTariff = proposedTariff;
+        this.tradeValue = tradeValue;
+    }
+
+    public TradeRequests(TradeRequests otherTradeRequests){
+        this.tradeFromCountry = otherTradeRequests.tradeFromCountry;
+        this.tradeToCountry = otherTradeRequests.tradeToCountry;
+        this.category = otherTradeRequests.category;
+        this.proposedTariff = otherTradeRequests.proposedTariff;
+        this.tradeValue = otherTradeRequests.tradeValue;
+    }
+
+
+    public String getREQ() {
+        return REQ;
+    }
+
+    public String getTradeRequestNumber() {
+        return tradeRequestNumber;
+    }
+
+    public static int getTradeRequestCounter() {
+        return tradeRequestCounter;
+    }
+
+    public String getTradeRequestCounterFormatted() {
+        return tradeRequestCounterFormatted;
+    }
+
+    public String getTradeFromCountry() {
+        return tradeFromCountry;
+    }
+
+    public String getTradeToCountry() {
+        return tradeToCountry;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public int getTradeValue() {
+        return tradeValue;
+    }
+
+    public int getProposedTariff() {
+        return proposedTariff;
+    }
+
+    public void setTradeFromCountry(String tradeFromCountry) {
+        this.tradeFromCountry = tradeFromCountry;
+    }
+
+    public void setTradeToCountry(String tradeToCountry) {
+        this.tradeToCountry = tradeToCountry;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
+
+    public void setTradeValue(int tradeValue) {
+        this.tradeValue = tradeValue;
+    }
+
+    public void setProposedTariff(int proposedTariff) {
+        this.proposedTariff = proposedTariff;
+    }
+
+    @Override
+    public String toString() {
+        return "Trade Request --> Request ID: " + tradeRequestNumber +
+                ", From: " + tradeFromCountry +
+                ", To: " + tradeToCountry +
+                ", Category: " + category +
+                ", Trade Value: $" + tradeValue +
+                ", Proposed Tariff: " + proposedTariff + "%";
+    }
+
+    @Override
+    public boolean equals(Object otherObject){
+        if(otherObject == null || !getClass().equals(otherObject.getClass())){
+            return false;
+        }
+        else{
+            TradeRequests otherTradeRequests = (TradeRequests) otherObject;
+            return tradeFromCountry.equals(otherTradeRequests.tradeFromCountry) &&
+                    tradeToCountry.equals(otherTradeRequests.tradeToCountry) &&
+                    category.equals(otherTradeRequests.category) &&
+                    proposedTariff == otherTradeRequests.proposedTariff &&
+                    tradeValue == otherTradeRequests.tradeValue;
+        }
+    }
+
+    @Override
+    public TradeRequests clone(){
+        return new TradeRequests(this);
+    }
+
+    public void readTradeRequests() throws FileNotFoundException, NullPointerException {
+        reader = new Scanner(new FileInputStream("src/RequiredFiles/TradeRequests.txt"));
+        TradeRequestsLinkedList tradeRequestsList = new TradeRequestsLinkedList();
+        while (reader.hasNextLine()) {
+            line = reader.nextLine();
+            String[] splitString = line.split(" ");
+            String requestNumber = splitString[0];
+            String tradeFrom = splitString[1];
+            String tradeTo = splitString[2];
+            String category = splitString[3];
+            int minTariff = Integer.parseInt(splitString[4]);
+            int value = Integer.parseInt(splitString[5]);
+            TradeRequests tradeRequests = new TradeRequests(tradeFrom,tradeTo,category,minTariff,value);
+            tradeRequestsList.addToStart(tradeRequests);
+            LinesCounter++;
+        }
+        tradeRequestsList.display();
+        System.out.println("----> Lines read: " + LinesCounter + " <----");
+        reader.close();
+    }
+}
