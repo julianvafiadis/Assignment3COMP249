@@ -127,29 +127,29 @@ public class TradeRequests {
         }
     }
 
-    @Override
-    public TradeRequests clone(){
-        return new TradeRequests(this);
-    }
-
-    public void readTradeRequests() throws FileNotFoundException, NullPointerException {
-        reader = new Scanner(new FileInputStream("src/RequiredFiles/TradeRequests.txt"));
-        TradeRequestsLinkedList tradeRequestsList = new TradeRequestsLinkedList();
-        while (reader.hasNextLine()) {
-            line = reader.nextLine();
-            String[] splitString = line.split(" ");
-            String requestNumber = splitString[0];
-            String tradeFrom = splitString[1];
-            String tradeTo = splitString[2];
-            String category = splitString[3];
-            int minTariff = Integer.parseInt(splitString[4]);
-            int value = Integer.parseInt(splitString[5]);
-            TradeRequests tradeRequests = new TradeRequests(tradeFrom,tradeTo,category,minTariff,value);
-            tradeRequestsList.addToStart(tradeRequests);
-            LinesCounter++;
-        }
-        tradeRequestsList.display();
-        System.out.println("----> Lines read: " + LinesCounter + " <----");
-        reader.close();
-    }
+//    @Override
+//    public TradeRequests clone(){
+//        return new TradeRequests(this);
+//    }
+//
+//    public void readTradeRequests() throws FileNotFoundException, NullPointerException {
+//        reader = new Scanner(new FileInputStream("src/RequiredFiles/TradeRequests.txt"));
+//        TradeRequestsLinkedList tradeRequestsList = new TradeRequestsLinkedList();
+//        while (reader.hasNextLine()) {
+//            line = reader.nextLine();
+//            String[] splitString = line.split(" ");
+//            String requestNumber = splitString[0];
+//            String tradeFrom = splitString[1];
+//            String tradeTo = splitString[2];
+//            String category = splitString[3];
+//            int minTariff = Integer.parseInt(splitString[4]);
+//            int value = Integer.parseInt(splitString[5]);
+//            TradeRequests tradeRequests = new TradeRequests(tradeFrom,tradeTo,category,minTariff,value);
+//            tradeRequestsList.addToStart(tradeRequests);
+//            LinesCounter++;
+//        }
+//        tradeRequestsList.display();
+//        System.out.println("----> Lines read: " + LinesCounter + " <----");
+//        reader.close();
+//    }
 }

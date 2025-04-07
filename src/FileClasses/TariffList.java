@@ -175,15 +175,17 @@ public class TariffList implements TariffPolicy{
 
     @Override
     public String evaluateTrade(double proposedTariff, double minimumTariff){
+        int prop = (int) proposedTariff;
+        int min = (int) minimumTariff;
         if(proposedTariff >= minimumTariff){
-            return "ACCEPTED";
+            return "ACCEPTED\nProposed tariff meets or exceeds the minimum requirement.";
         }
-        else if(proposedTariff <= minimumTariff * 0.8){
-//            double surcharge = TradeRequests.tradeValue * ((minimumTariff - proposedTariff) / 100);
-            return "CONDITIONALLY ACCEPTED";
+        else if(proposedTariff >= minimumTariff * 0.8){
+            double surcharge = TradeRequests.tradeValue * ((minimumTariff - proposedTariff) / 100);
+            return "CONDITIONALLY ACCEPTED\nProposed tariff " + prop + "% is within 20% of the required minimum tariff " + min + "%.";
         }
         else {
-            return "REJECTED";
+            return "REJECTED\nProposed tariff " + prop + "% is more than 20% below the required minimum tariff " + min + "%.";
         }
     }
 

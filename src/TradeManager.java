@@ -20,25 +20,51 @@ public class TradeManager {
         TariffList list2 = new TariffList(); // For copy constructor or other uses
 
         // (b) Read Tariffs.txt
-        try (Scanner tariffReader = new Scanner(new FileInputStream("src/RequiredFiles/Tariffs.txt"))) {
-            while (tariffReader.hasNextLine()) {
-                String line = tariffReader.nextLine();
-                String[] parts = line.split(" ");
+        try {
+            Scanner tariffReader = new Scanner(new FileInputStream("src/RequiredFiles/Tariffs.txt"));
+            Scanner tradeRequestsReader = new Scanner(new FileInputStream("src/RequiredFiles/TradeRequests.txt"));
 
-                String destination = parts[0];
-                String origin = parts[1];
-                String category = parts[2];
-                int minTariff = Integer.parseInt(parts[3]);
+            while (tariffReader.hasNextLine() && tradeRequestsReader.hasNextLine()) {
+                String tariffLine = tariffReader.nextLine();
+                String[] tariffParts = tariffLine.split(" ");
 
-                Tariff tariff = new Tariff(destination, origin, category, minTariff);
+                String tariffDestination = tariffParts[0];
+                String tariffOrigin = tariffParts[1];
+                String tariffCategory = tariffParts[2];
+                int tariffMinTariff = Integer.parseInt(tariffParts[3]);
 
-                if (!list1.contains(origin, destination, category)) {
+                Tariff tariff = new Tariff(tariffDestination, tariffOrigin, tariffCategory, tariffMinTariff);
+
+                if (!list1.contains(tariffOrigin, tariffDestination, tariffCategory)) {
                     list1.addToStart(tariff);
                 }
+
+                String tradeLine = tradeRequestsReader.nextLine();
+                String[] tradeParts = tradeLine.split(" ");
+
+                String tradeRequestNumber = tradeParts[0];
+                String tradeOrigin = tradeParts[1];
+                String tradeDestination = tradeParts[2];
+                String tradeCategory = tradeParts[3];
+                int tradeValue = Integer.parseInt(tradeParts[4]);
+                int tradeProposedTariff = Integer.parseInt(tradeParts[5]);
+
+                TradeRequests tradeRequests = new TradeRequests(tradeOrigin, tradeDestination, tradeCategory, tradeValue, tradeProposedTariff);
+                ArrayList<TradeRequests> tradeRequestsArrayList = new ArrayList<>();
+                tradeRequestsArrayList.add(tradeRequests);
+
+                String result = list1.evaluateTrade(tradeProposedTariff, tariffMinTariff);
+                System.out.println(tradeRequestNumber + " - " + result + "\n");
             }
+
+            tariffReader.close();
+            tradeRequestsReader.close();
+
         } catch (FileNotFoundException e) {
-            System.out.println("Error: Tariffs.txt not found.");
+            System.err.println("Error: file not found.");
             return;
         }
+
+        
     }
 }
