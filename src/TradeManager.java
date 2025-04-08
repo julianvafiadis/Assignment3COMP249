@@ -96,6 +96,20 @@ public class TradeManager {
             System.out.println("The two lists are equal: " + list3.equals(list2));
             list3.display();
 
+            System.out.println("\nTRADE REQUESTS --- GETTERS/SETTERS --- TESTING: ");
+            TradeRequests tradeRequests = new TradeRequests();
+            tradeRequests.setTradeFromCountry("Australia");
+            tradeRequests.setTradeToCountry("Mexico");
+            tradeRequests.setTradeValue(80000);
+            tradeRequests.setCategory("Furniture");
+            tradeRequests.setProposedTariff(20);
+            System.out.println("Category: " + tradeRequests.getCategory());
+            System.out.println("Trade Value: " + tradeRequests.getTradeValue());
+            System.out.println("Destination: " + tradeRequests.getTradeToCountry());
+            System.out.println("Origin: " + tradeRequests.getTradeFromCountry());
+            System.out.println("Trade Request Number: " + tradeRequests.getTradeRequestNumber());
+            System.out.println("Proposed Tariff: " + tradeRequests.getProposedTariff() + "\n");
+
         } catch (FileNotFoundException e) {
             System.err.println("Error: file not found!");
             return;
@@ -106,7 +120,7 @@ public class TradeManager {
 
         Scanner keyIn = new Scanner(System.in);
         char decisionChar;
-        System.out.println("SEARCH FOR A TARIFF:");
+        System.out.println("SEARCH FOR A TARIFF FROM 'Tariff.txt' AND 'TradeRequests.txt' FILES:");
 
         do {
             System.out.print("Enter the destination country --> ");

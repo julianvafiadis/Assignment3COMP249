@@ -13,7 +13,7 @@ public class TradeRequests {
     private int proposedTariff;
 
     public TradeRequests(){
-
+        this.tradeRequestNumber = String.format("REQ%03d", tradeRequestCounter++);
     }
 
     public TradeRequests(String tradeFromCountry, String tradeToCountry, String category, int tradeValue, int proposedTariff) {
@@ -26,6 +26,7 @@ public class TradeRequests {
     }
 
     public TradeRequests(TradeRequests otherTradeRequests){
+        this.tradeRequestNumber = String.format("REQ%03d", tradeRequestCounter++);
         this.tradeFromCountry = otherTradeRequests.tradeFromCountry;
         this.tradeToCountry = otherTradeRequests.tradeToCountry;
         this.category = otherTradeRequests.category;
