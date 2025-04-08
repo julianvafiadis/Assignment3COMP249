@@ -148,7 +148,7 @@ public class TradeData {
                 System.out.println("Skipping malformed line: " + line);
             }
         }
-        System.out.println("----> Lines read: " + LinesCounter + " <----");
+        System.out.println("--------------------------------------------------> Lines read: " + LinesCounter + " <--------------------------------------------------");
         reader.close();
     }
 
@@ -171,9 +171,10 @@ public class TradeData {
         sortProductsByName();
         writer = new PrintWriter(new FileOutputStream("src/RequiredFiles/UpdatedTradeData.txt"));
         for(TradeData trade: products){
+            System.out.println(trade);
             writer.println(trade.getTradeDataName() + "," + trade.getCountry() + "," + trade.getCategory() + "," + trade.getPrice());
         }
-        System.out.println("----> Successfully wrote to UpdatedTradeData.txt <----");
+        System.out.println("------------------------------------> Successfully wrote to UpdatedTradeData.txt <------------------------------------");
         writer.close();
     }
 }

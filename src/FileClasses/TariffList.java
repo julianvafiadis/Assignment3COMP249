@@ -1,3 +1,4 @@
+
 package FileClasses;
 
 import java.util.NoSuchElementException;
@@ -108,15 +109,18 @@ public class TariffList implements TariffPolicy{
         position.setData(newTariff);
     }
 
-    public Tariff find(String originCountry, String destinationCountry, String productCategory) {
+    public Tariff find(String originCountry, String destinationCountry,  String productCategory) {
+        originCountry = originCountry.trim().toUpperCase();
+        destinationCountry = destinationCountry.trim().toUpperCase();
+        productCategory = productCategory.trim().toUpperCase();
         TariffNode position = head;
         int iterations = 0;
         while (position != null) {
             iterations++;
             Tariff data = position.getData();
-            if (data.getOriginCountry().equals(originCountry) &&
-                    data.getDestinationCountry().equals(destinationCountry) &&
-                    data.getProductCategory().equals(productCategory)) {
+            if (data.getDestinationCountry().trim().toUpperCase().equals(destinationCountry) &&
+                    data.getOriginCountry().trim().toUpperCase().equals(originCountry) &&
+                    data.getProductCategory().trim().toUpperCase().equals(productCategory)) {
                 System.out.println("Iterations: " + iterations);
                 return data;
             }
@@ -130,8 +134,8 @@ public class TariffList implements TariffPolicy{
         TariffNode position = head;
         while (position != null) {
             Tariff data = position.getData();
-            if (data.getOriginCountry().equals(originCountry) &&
-                    data.getDestinationCountry().equals(destinationCountry) &&
+            if (data.getDestinationCountry().equals(destinationCountry) &&
+                    data.getOriginCountry().equals(originCountry) &&
                     data.getProductCategory().equals(productCategory)) {
                 return true;
             }
@@ -175,15 +179,17 @@ public class TariffList implements TariffPolicy{
 
     @Override
     public String evaluateTrade(double proposedTariff, double minimumTariff){
+        int prop = (int) proposedTariff;
+        int min = (int) minimumTariff;
         if(proposedTariff >= minimumTariff){
-            return "ACCEPTED";
+            return "ACCEPTED\nProposed tariff meets or exceeds the minimum requirement.";
         }
-        else if(proposedTariff <= minimumTariff * 0.8){
-//            double surcharge = TradeRequests.tradeValue * ((minimumTariff - proposedTariff) / 100);
-            return "CONDITIONALLY ACCEPTED";
+        else if(proposedTariff >= minimumTariff * 0.8){
+            double surcharge = TradeRequests.tradeValue * ((minimumTariff - proposedTariff) / 100);
+            return "CONDITIONALLY ACCEPTED\nProposed tariff " + prop + "% is within 20% of the required minimum tariff " + min + "%.";
         }
         else {
-            return "REJECTED";
+            return "REJECTED\nProposed tariff " + prop + "% is more than 20% below the required minimum tariff " + min + "%.";
         }
     }
 

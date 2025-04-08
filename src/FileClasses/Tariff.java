@@ -93,23 +93,4 @@ public class Tariff implements Cloneable{
     public Tariff clone(){
         return new Tariff(this);
     }
-
-    public void readTariffs() throws FileNotFoundException, NullPointerException {
-        reader = new Scanner(new FileInputStream("src/RequiredFiles/Tariffs.txt"));
-        TariffList tariffList = new TariffList();
-        while (reader.hasNextLine()) {
-            line = reader.nextLine();
-            String[] splitString = line.split(" ");
-            String destination = splitString[0];
-            String origin = splitString[1];
-            String category = splitString[2];
-            int minTariff = Integer.parseInt(splitString[3]);
-            Tariff tariff = new Tariff(destination, origin, category, minTariff);
-            tariffList.addToStart(tariff);
-            LinesCounter++;
-        }
-        tariffList.display();
-        System.out.println("----> Lines read: " + LinesCounter + " <----");
-        reader.close();
-    }
 }
