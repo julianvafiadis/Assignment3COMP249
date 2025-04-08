@@ -1,10 +1,5 @@
 package FileClasses;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.PrintWriter;
-import java.util.Scanner;
-
 public class Tariff implements Cloneable{
 
     private String destinationCountry;
@@ -12,20 +7,11 @@ public class Tariff implements Cloneable{
     private String productCategory;
     private int minimumTariff;
 
-    private Scanner reader = null;
-    private PrintWriter writer = null;
-    private String line = null;
-    private int LinesCounter = 0;
-
     public Tariff(String destinationCountry, String originCountry, String productCategory, int minimumTariff) {
         this.destinationCountry = destinationCountry;
         this.originCountry = originCountry;
         this.productCategory = productCategory;
         this.minimumTariff = minimumTariff;
-    }
-
-    public Tariff(){
-
     }
 
     public Tariff(Tariff otherTariff){
@@ -35,35 +21,26 @@ public class Tariff implements Cloneable{
         this.minimumTariff = otherTariff.minimumTariff;
     }
 
-    public String getDestinationCountry() {
-
-        return destinationCountry;
+    public String getDestinationCountry() {return destinationCountry;}
+    public String getOriginCountry() {
+        return originCountry;
+    }
+    public String getProductCategory() {
+        return productCategory;
+    }
+    public int getMinimumTariff() {
+        return minimumTariff;
     }
 
     public void setDestinationCountry(String destinationCountry) {
         this.destinationCountry = destinationCountry;
     }
-
-    public String getOriginCountry() {
-        return originCountry;
-    }
-
     public void setOriginCountry(String originCountry) {
         this.originCountry = originCountry;
     }
-
-    public String getProductCategory() {
-        return productCategory;
-    }
-
     public void setProductCategory(String productCategory) {
         this.productCategory = productCategory;
     }
-
-    public int getMinimumTariff() {
-        return minimumTariff;
-    }
-
     public void setMinimumTariff(int minimumTariff) {
         this.minimumTariff = minimumTariff;
     }

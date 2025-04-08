@@ -26,12 +26,17 @@ public class TradeData {
         tariffAdjustments();
     }
 
-    public TradeData(TradeData tradeData){
+    public TradeData(TradeData tradeData) {
         this.tradeDataName = tradeData.tradeDataName;
         this.country = tradeData.country;
         this.category = tradeData.category;
         this.price = tradeData.price;
-        tariffAdjustments();
+
+        // Deep copy the list if needed
+        this.products = new ArrayList<>();
+        for (TradeData item : tradeData.products) {
+            this.products.add(new TradeData(item)); // recursive copy
+        }
     }
 
     public String getTradeDataName() {
@@ -115,9 +120,6 @@ public class TradeData {
         else if(getCountry().toLowerCase().trim().equals("brazil")&&getCategory().toLowerCase().trim().equals("agriculture")){
             price = price *1.09;
         }
-        else{
-            price = price;
-        }
         price = Double.parseDouble(String.format("%.2f", price));
         setPrice(price);
     }
@@ -128,6 +130,10 @@ public class TradeData {
     private String line = null;
     private static int LinesCounter = 0;
     private ArrayList<TradeData> products = new ArrayList<>();
+
+    public ArrayList<TradeData> getProducts() {
+        return products;
+    }
 
     public void readTradeData() throws FileNotFoundException, NullPointerException {
         reader = new Scanner(new FileInputStream("src/RequiredFiles/TradeData.txt"));

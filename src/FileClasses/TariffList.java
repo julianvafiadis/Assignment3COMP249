@@ -59,12 +59,14 @@ public class TariffList implements TariffPolicy{
     }
 
     public void deleteFromIndex(int index) {
-        if (head == null){
-            throw new NoSuchElementException("Head is Null!");
+        if (head == null) {
+            throw new NoSuchElementException("The list is empty, cannot delete from index " + index);
         }
         if (index < 0 || index >= size) {
             throw new NoSuchElementException("Invalid index: " + index);
         }
+
+        // Deleting the first node
         if (index == 0) {
             head = head.getLink();
             size--;
@@ -74,15 +76,21 @@ public class TariffList implements TariffPolicy{
             return;
         }
 
+        // Deleting a node from the middle or end
         TariffNode position = head;
         for (int i = 0; i < index - 1; i++) {
             position = position.getLink();
         }
+
+        // Position now points to the node before the one we want to delete
         TariffNode nodeToDelete = position.getLink();
         position.setLink(nodeToDelete.getLink());
+
+        // If we deleted the last node, update the tail
         if (nodeToDelete == tail) {
             tail = position;
         }
+
         size--;
     }
 
@@ -186,7 +194,7 @@ public class TariffList implements TariffPolicy{
         }
         else if(proposedTariff >= minimumTariff * 0.8){
             double surcharge = TradeRequests.tradeValue * ((minimumTariff - proposedTariff) / 100);
-            return "CONDITIONALLY ACCEPTED\nProposed tariff " + prop + "% is within 20% of the required minimum tariff " + min + "%.";
+            return "CONDITIONALLY ACCEPTED\nProposed tariff " + prop + "% is within 20% of the required minimum tariff " + min + "%.\nSurcharge: $" + surcharge;
         }
         else {
             return "REJECTED\nProposed tariff " + prop + "% is more than 20% below the required minimum tariff " + min + "%.";
@@ -216,15 +224,13 @@ public class TariffList implements TariffPolicy{
         public Tariff getData(){
             return data;
         }
-
-        public void setData(Tariff data){
-            this.data = data;
-        }
-
         public TariffNode getLink(){
             return link;
         }
 
+        public void setData(Tariff data){
+            this.data = data;
+        }
         public void setLink(TariffNode link){
             this.link = link;
         }

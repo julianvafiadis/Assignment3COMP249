@@ -24,11 +24,18 @@ public class TradeManager {
         // (b) Read Tariffs.txt
         try {
             Scanner tradeData = new Scanner(new FileInputStream("src/RequiredFiles/TradeData.txt"));
-            TradeData data = new TradeData();
             System.out.println("RAW VERSION: TradeData.txt");
-            data.readTradeData();
+            TradeData tradeData1 = new TradeData();
+            tradeData1.readTradeData();
             System.out.println("\nALPHABETICALLY SORTED AND STORED VERSION:");
-            data.writeTradeData();
+            tradeData1.writeTradeData();
+
+            TradeData dataCopy = new TradeData(tradeData1.getProducts().getFirst());
+            dataCopy.setCategory("Technology");
+            dataCopy.setCountry("Italy");
+            dataCopy.setTradeDataName("Computer");
+            System.out.println("\nTRADE DATA --- COPY CONSTRUCTOR --- TESTING: " + dataCopy);
+
             System.out.println("\n'Tariff.txt' AND 'TradeRequests.txt' FILE ANALYSIS:\n");
 
             Scanner tariffReader = new Scanner(new FileInputStream("src/RequiredFiles/Tariffs.txt"));
@@ -69,6 +76,25 @@ public class TradeManager {
 
             tariffReader.close();
             tradeRequestsReader.close();
+
+            TariffList list3 = new TariffList(list1);
+            Tariff data1 = new Tariff("Greece", "Venezuela", "Clothing", 18);
+            Tariff data2 = new Tariff("Norway", "Thailand", "Toys", 10);
+            Tariff data3 = new Tariff("Argentina", "Morocco", "Food", 40);
+            Tariff data4 = new Tariff("Canada", "Egypt", "Pharmaceuticals", 22);
+            data2.setDestinationCountry("Brazil");
+            data2.setOriginCountry("Finland");
+            data2.setProductCategory("Books");
+            data2.setMinimumTariff(25);
+            System.out.println("TARIFF LIST --- COPY CONSTRUCTOR --- TESTING: ");
+            list3.insertAtIndex(data1, 0);
+            list3.insertAtIndex(data4, 1);
+            list3.insertAtIndex(data2, 2);
+            list3.deleteFromIndex(2);
+            list3.deleteFromStart();
+            list3.replaceAtIndex(data3, 3);
+            System.out.println("The two lists are equal: " + list3.equals(list2));
+            list3.display();
 
         } catch (FileNotFoundException e) {
             System.err.println("Error: file not found!");
