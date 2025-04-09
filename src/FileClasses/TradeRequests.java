@@ -4,12 +4,12 @@ public class TradeRequests {
 
     final private String REQ = "REQ";
     private static int tradeRequestCounter = 1;
-    private String tradeRequestCounterFormatted = String.format("%03d", tradeRequestCounter);
+    private final String tradeRequestCounterFormatted = String.format("%03d", tradeRequestCounter);
     private String tradeRequestNumber = REQ + tradeRequestCounterFormatted;
     private String tradeFromCountry;
     private String tradeToCountry;
     private String category;
-    public static int tradeValue; // PRIVACY LEAK
+    protected static int tradeValue; // PRIVACY LEAK:
     private int proposedTariff;
 
     public TradeRequests(){
