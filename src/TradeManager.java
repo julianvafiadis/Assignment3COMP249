@@ -178,6 +178,8 @@ public class TradeManager {
         Scanner keyIn = new Scanner(System.in); // create a scanner for user inputs
         char decisionChar; // declare char decisionChar
         System.out.println("SEARCH FOR A TARIFF FROM THE 'Tariff.txt' FILE:");
+        list1.display(); // display the possible tariffs to search for
+        System.out.println(); // skip a line
 
         do {
             System.out.print("Enter the destination country --> ");
