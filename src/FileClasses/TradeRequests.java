@@ -2,20 +2,22 @@ package FileClasses;
 
 public class TradeRequests {
 
-    final private String REQ = "REQ";
-    private static int tradeRequestCounter = 1;
-    private final String tradeRequestCounterFormatted = String.format("%03d", tradeRequestCounter);
-    private String tradeRequestNumber = REQ + tradeRequestCounterFormatted;
-    private String tradeFromCountry;
-    private String tradeToCountry;
-    private String category;
-    protected static int tradeValue; // PRIVACY LEAK:
-    private int proposedTariff;
+    final private String REQ = "REQ"; // declare and initialize final private String REQ to "REQ"
+    private static int tradeRequestCounter = 1; // declare and initialize private static int traderequestcoutner to 1
+    private final String tradeRequestCounterFormatted = String.format("%03d", tradeRequestCounter); // declare and initialize private final string traderequestcounterformatted to traderequest counter, but formatted to match the instructions
+    private String tradeRequestNumber = REQ + tradeRequestCounterFormatted; // store the two above values in the declared and initialized String traderequestnumber
+    private String tradeFromCountry; // declare private string origin
+    private String tradeToCountry; // declare private string destination
+    private String category; // declare private string category
+    protected static int tradeValue; // declare protected static int tradevalue // PRIVACY LEAK: ANYONE CAN CHANGE THIS VALUE AT ANY TIME WITHOUT THE NEED OF A GETTER
+    private int proposedTariff; // declare private int proposed tariff
 
+    // default constructor which adds a trade request number to the trade request
     public TradeRequests(){
         this.tradeRequestNumber = String.format("REQ%03d", tradeRequestCounter++);
     }
 
+    // parameterized constructor
     public TradeRequests(String tradeFromCountry, String tradeToCountry, String category, int tradeValue, int proposedTariff) {
         this.tradeRequestNumber = String.format("REQ%03d", tradeRequestCounter++);
         this.tradeFromCountry = tradeFromCountry;
@@ -25,6 +27,7 @@ public class TradeRequests {
         this.tradeValue = tradeValue;
     }
 
+    // copy constructor which copies everything but the request number
     public TradeRequests(TradeRequests otherTradeRequests){
         this.tradeRequestNumber = String.format("REQ%03d", tradeRequestCounter++);
         this.tradeFromCountry = otherTradeRequests.tradeFromCountry;
@@ -34,6 +37,7 @@ public class TradeRequests {
         this.tradeValue = otherTradeRequests.tradeValue;
     }
 
+    //getters
     public String getTradeRequestNumber() {
         return tradeRequestNumber;
     }
@@ -53,6 +57,7 @@ public class TradeRequests {
         return proposedTariff;
     }
 
+    //setters
     public void setTradeFromCountry(String tradeFromCountry) {
         this.tradeFromCountry = tradeFromCountry;
     }
@@ -69,6 +74,7 @@ public class TradeRequests {
         this.proposedTariff = proposedTariff;
     }
 
+    //toString
     @Override
     public String toString() {
         return "Trade Request --> Request ID: " + tradeRequestNumber +
@@ -79,6 +85,7 @@ public class TradeRequests {
                 ", Proposed Tariff: " + proposedTariff + "%";
     }
 
+    //equals method
     @Override
     public boolean equals(Object otherObject){
         if(otherObject == null || !getClass().equals(otherObject.getClass())){
@@ -94,6 +101,7 @@ public class TradeRequests {
         }
     }
 
+    //clone
     @Override
     public TradeRequests clone(){
         return new TradeRequests(this);

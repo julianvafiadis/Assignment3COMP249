@@ -2,25 +2,26 @@ package FileClasses;
 
 public class Tariff implements Cloneable{
 
-    private String destinationCountry;
-    private String originCountry;
-    private String productCategory;
-    private int minimumTariff;
+    private String destinationCountry; //declare a private destinationCountry as a String
+    private String originCountry; //declare a private originCountry as a String
+    private String productCategory; //declare a private productCategory as a String
+    private int minimumTariff; //declare a private minimumTariff as an int
 
-    public Tariff(String destinationCountry, String originCountry, String productCategory, int minimumTariff) {
-        this.destinationCountry = destinationCountry;
-        this.originCountry = originCountry;
-        this.productCategory = productCategory;
-        this.minimumTariff = minimumTariff;
+    public Tariff(String destinationCountry, String originCountry, String productCategory, int minimumTariff) { // constructor with all the values above
+        this.destinationCountry = destinationCountry; // set this destination country to the one entered as a parameter
+        this.originCountry = originCountry; // set this origin country to the one entered as a parameter
+        this.productCategory = productCategory; // set this product category to the one entered as a parameter
+        this.minimumTariff = minimumTariff; // set this minimum tariff to the one entered as a parameter
     }
 
-    public Tariff(Tariff otherTariff){
+    public Tariff(Tariff otherTariff){ // copy constructor (deep copy)
         this.destinationCountry = otherTariff.destinationCountry;
         this.originCountry = otherTariff.originCountry;
         this.productCategory = otherTariff.productCategory;
         this.minimumTariff = otherTariff.minimumTariff;
     }
 
+    //getters
     public String getDestinationCountry() {return destinationCountry;}
     public String getOriginCountry() {
         return originCountry;
@@ -32,6 +33,7 @@ public class Tariff implements Cloneable{
         return minimumTariff;
     }
 
+    //setters
     public void setDestinationCountry(String destinationCountry) {
         this.destinationCountry = destinationCountry;
     }
@@ -45,6 +47,7 @@ public class Tariff implements Cloneable{
         this.minimumTariff = minimumTariff;
     }
 
+    //toString
     @Override
     public String toString(){
         return "Tariff --> Origin Country: " + originCountry +
@@ -53,6 +56,7 @@ public class Tariff implements Cloneable{
                 ", Minimum Tariff: " + minimumTariff;
     }
 
+    //equals
     @Override
     public boolean equals(Object otherObject){
         if(otherObject == null || !getClass().equals(otherObject.getClass())){
@@ -66,6 +70,8 @@ public class Tariff implements Cloneable{
                     minimumTariff == otherTariff.minimumTariff;
         }
     }
+
+    //clone
     @Override
     public Tariff clone(){
         return new Tariff(this);
